@@ -25,8 +25,8 @@ Data leakage is the most prevalent flaw in predictive maintenance benchmarks. Mi
    - **Validation**: 6 assets (16%)
    - **Test**: 5 assets (13%)
    - *Zero asset overlap*: No asset in the test set has ever been seen in training or validation.
-2. **Causal Backward-Looking Features**: Feature extraction uses only backward-looking rolling statistics. At cycle $t$, statistics are calculated over $[t-W+1, t]$. No future cycles ($t+1, t+2, \dots$) are ever observed.
-3. **Reproducible Preprocessing**: Imputation and feature scalers are fitted strictly on the training split and applied to validation/test.
+2. **Causal Backward-Looking Features**: Feature extraction strictly uses backward-looking rolling statistics. At cycle $t$, statistics are calculated over $[t-W+1, t]$. No future cycles ($t+1, t+2, \dots$) are ever observed.
+3. **Reproducible Preprocessing**: Imputation and feature scalers are fitted strictly on the training split and applied to validation/test. The `min_periods=1` parameter ensures we don't introduce `NaN` values during early operating cycles.
 
 ---
 
@@ -41,20 +41,22 @@ From the 21 C-MAPSS sensors, 13 non-constant, degradation-informative channels a
 
 ### Engineered Feature Transformations
 For each sensor channel $s_i$:
-- **Rolling Mean**: $\mu_{W}(s_i)$ for windows $W \in \{5, 10, 20\}$ cycles.
-- **Rolling Standard Deviation**: $\sigma_{W}(s_i)$ for windows $W \in \{5, 10, 20\}$ cycles.
-- **Rate-of-Change / Delta**: $\Delta_W(s_i) = s_i(t) - \mu_W(s_i)$.
+- **Rolling Mean**: $\mu_{W}(s_i)$ over backward windows $W \in \{5, 10, 20\}$ cycles.
+- **Rolling Standard Deviation**: $\sigma_{W}(s_i)$ over backward windows $W \in \{5, 10, 20\}$ cycles.
+- **Rate-of-Change / Delta**: $\Delta_W(s_i) = s_i(t) - \mu_W(s_i)$, capturing immediate rate of wear.
 - **Cumulative Cycle Count**: Represents mechanical duty duration.
 
 ---
 
-## 4. Models & Algorithms
+## 4. Models & Inference
 
-We benchmarked two robust gradient ensemble algorithms:
-1. **HistGradientBoostingRegressor / Classifier**: Highly efficient histogram-based gradient boosting capable of capturing non-linear wear curves.
-2. **RandomForestRegressor / Classifier**: 100 decision trees with bootstrap aggregation providing explainable feature importances and low variance.
-
-The model is trained, serialized with `joblib`, and stored in `src/backend/models_artifacts/rul_model.joblib`.
+1. **RUL Regressor**: We use a `HistGradientBoostingRegressor` to predict the Remaining Useful Life (RUL). This model natively handles unscaled data and is robust to non-linear degradation curves. Serialized to `src/backend/models_artifacts/rul_model.joblib`.
+2. **Failure Classifier**: We use a `HistGradientBoostingClassifier` to predict the probability of failure within the next 30 cycles (`classifier_model.joblib`), using balanced sample weighting.
+3. **Inference Wrapper (`MissionGuardPredictor`)**: The unified predictor in `src/ml/predict.py` takes an asset's telemetry history, generates backward rolling features, and derives:
+   - Predicted RUL and confidence intervals
+   - 30-cycle early-warning failure probability
+   - Categorical degradation stage (`healthy`, `degraded`, `critical`)
+   - Top 3 dominant sensor drift indicators based on the most significant current deltas.
 
 ---
 
@@ -63,4 +65,4 @@ The model is trained, serialized with `joblib`, and stored in `src/backend/model
 Metrics are evaluated **strictly on the 5 held-out test assets** and saved directly to `src/ml/metrics.json`:
 - **RUL Regression**: Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and Coefficient of Determination ($R^2$).
 - **Early Warning Classification**: Precision, Recall, F1-Score, and ROC-AUC.
-- Metrics are calculated automatically during pipeline runs and never hardcoded.
+- Real metrics calculated automatically during pipeline runs and never hardcoded.

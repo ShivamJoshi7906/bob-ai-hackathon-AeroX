@@ -1,0 +1,14 @@
+{
+  "test_assets_count": 5,
+  "rul_regression": {
+    "mae": 25.44,
+    "rmse": 33.57,
+    "r2": 0.6887
+  },
+  "failure_within_30_classification": {
+    "f1_score": 0.8073,
+    "precision": 0.7674,
+    "recall": 0.8516,
+    "roc_auc": 0.9771
+  }
+}
