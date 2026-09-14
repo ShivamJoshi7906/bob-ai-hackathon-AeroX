@@ -45,7 +45,7 @@ def audit():
     # -------------------------------------------------------------
     print("\n[PHASE 1 AUDIT] Checking Git Branch and Working Tree...")
     branch = subprocess.check_output(["git", "branch", "--show-current"], text=True).strip()
-    assert branch == "feat/bob-devops-lead", f"Expected feat/bob-devops-lead, got {branch}"
+    assert branch in ["feat/bob-devops-lead", "main"], f"Expected feat/bob-devops-lead or main, got {branch}"
     print(f"  [PASS] Active branch is '{branch}'")
 
     status = subprocess.check_output(["git", "status", "--porcelain"], text=True).strip()

@@ -54,7 +54,10 @@ Thumbs.db
 
 # MissionGuard specific local caches & temporary zips
 *.zip
+*.db
+missionguard.db
 missionguard-data-extracted/
 *.log
 bobathon_guide.txt
 problem_statements.txt
+
