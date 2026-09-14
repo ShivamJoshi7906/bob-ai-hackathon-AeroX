@@ -102,9 +102,6 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 
 ## 7. Submission Artifacts & Links
 
-All key technical documentation and submission artifacts are available
-directly in this repository.
-
 - **Setup Guide:** [`docs/setup-guide.md`](docs/setup-guide.md)
 - **Technical Architecture:** [`docs/architecture.md`](docs/architecture.md)
 - **ML Methodology:** [`docs/ml-methodology.md`](docs/ml-methodology.md)
@@ -113,7 +110,6 @@ directly in this repository.
 - **Hackathon Score Audit:** [`docs/hackathon-score-audit.md`](docs/hackathon-score-audit.md)
 - **Presentation Slide Deck:** [`presentation/slides.pdf`](presentation/slides.pdf)
 - **Demo Video:** [`demo/demo-video-link.txt`](demo/demo-video-link.txt)
-- **Live Demo:** [`demo/live-demo-url.txt`](demo/live-demo-url.txt)
 - **Demo Screenshots:** [`demo/screenshots/`](demo/screenshots/)
 
 ---
