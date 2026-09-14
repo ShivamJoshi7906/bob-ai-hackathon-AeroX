@@ -6,17 +6,23 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    preserveSymlinks: true,
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
   server: {
     port: 3000,
+    fs: {
+      strict: false,
+      allow: ['..', 'D:/Projects/IBM-Hackthon', 'D:/IBM-Hackthon'],
+    },
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
       },
     },
   },
 });
+
