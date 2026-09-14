@@ -35,6 +35,59 @@ interface FleetDashboardProps {
   onNavigateToBob: () => void;
 }
 
+interface RiskTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  totalAssets: number;
+}
+
+const RiskTooltip: React.FC<RiskTooltipProps> = ({ active, payload, totalAssets }) => {
+  if (!active || !payload || !payload.length) return null;
+
+  const data = payload[0].payload;
+  const level: string = data.level;
+  const count: number = data.count;
+  const fill: string = data.fill;
+  const percentage = totalAssets > 0 ? ((count / totalAssets) * 100).toFixed(1) : '0.0';
+
+  return (
+    <div className="bg-slate-900 border border-slate-700/90 rounded-xl p-3.5 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.8)] font-mono text-xs min-w-[170px] space-y-2 pointer-events-none transition-all duration-150">
+      {/* Title & Level Badge */}
+      <div className="flex items-center justify-between border-b border-slate-800 pb-2 gap-3">
+        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold font-sans">
+          Failure Risk
+        </span>
+        <span
+          className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider font-mono shadow-sm"
+          style={{
+            backgroundColor: `${fill}25`,
+            color: fill,
+            border: `1px solid ${fill}60`,
+          }}
+        >
+          {level}
+        </span>
+      </div>
+
+      {/* Metric Breakdown */}
+      <div className="space-y-1.5 pt-0.5">
+        <div className="flex items-baseline justify-between text-slate-300">
+          <span className="text-slate-400 text-[11px]">Asset Count:</span>
+          <span className="text-white font-bold text-sm">
+            {count} {count === 1 ? 'Asset' : 'Assets'}
+          </span>
+        </div>
+        <div className="flex items-baseline justify-between text-slate-300">
+          <span className="text-slate-400 text-[11px]">Fleet Share:</span>
+          <span className="font-bold text-cyan-300 text-xs">
+            {percentage}% <span className="text-slate-400 text-[10px] font-normal">of Fleet</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const FleetDashboard: React.FC<FleetDashboardProps> = ({
   summary,
   assets,
@@ -45,6 +98,9 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [riskFilter, setRiskFilter] = useState('ALL');
+  const [hoveredRiskIndex, setHoveredRiskIndex] = useState<number | null>(null);
+
+  const totalFleetAssets = summary?.total_assets ?? (assets.length > 0 ? assets.length : 38);
 
   // Filtered Assets
   const filteredAssets = assets.filter(asset => {
@@ -192,13 +248,29 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0f172a',
-                    borderColor: '#334155',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    color: '#f8fafc',
+                  content={({ active, payload }) => {
+                    if (!active || !payload || !payload.length) return null;
+                    const item = payload[0].payload;
+                    const pct = totalFleetAssets > 0 ? ((item.value / totalFleetAssets) * 100).toFixed(1) : '0.0';
+                    return (
+                      <div className="bg-slate-900 border border-slate-700/90 rounded-xl p-3 shadow-2xl shadow-black/80 font-mono text-xs space-y-1.5 pointer-events-none min-w-[150px]">
+                        <div className="flex items-center space-x-2 border-b border-slate-800 pb-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                          <span className="font-bold text-white uppercase tracking-wider">{item.name}</span>
+                        </div>
+                        <div className="flex justify-between items-baseline text-slate-300">
+                          <span className="text-slate-400 text-[11px]">Assets:</span>
+                          <span className="font-bold text-white text-sm">{item.value}</span>
+                        </div>
+                        <div className="flex justify-between items-baseline text-slate-300">
+                          <span className="text-slate-400 text-[11px]">Fleet Share:</span>
+                          <span className="font-bold text-emerald-400">{pct}%</span>
+                        </div>
+                      </div>
+                    );
                   }}
+                  wrapperStyle={{ outline: 'none', zIndex: 100 }}
+                  allowEscapeViewBox={{ x: true, y: true }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -228,21 +300,35 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
 
           <div className="h-56 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={riskChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart
+                data={riskChartData}
+                margin={{ top: 12, right: 10, left: -20, bottom: 0 }}
+                onMouseLeave={() => setHoveredRiskIndex(null)}
+              >
                 <XAxis dataKey="level" stroke="#64748b" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748b" fontSize={11} tickLine={false} allowDecimals={false} />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0f172a',
-                    borderColor: '#334155',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    color: '#f8fafc',
-                  }}
+                  content={<RiskTooltip totalAssets={totalFleetAssets} />}
+                  cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
+                  wrapperStyle={{ outline: 'none', zIndex: 100 }}
+                  allowEscapeViewBox={{ x: true, y: true }}
+                  animationDuration={150}
                 />
-                <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                <Bar
+                  dataKey="count"
+                  radius={[6, 6, 0, 0]}
+                  cursor="pointer"
+                  onMouseEnter={(_, index) => setHoveredRiskIndex(index)}
+                >
                   {riskChartData.map((entry, index) => (
-                    <Cell key={`bar-${index}`} fill={entry.fill} />
+                    <Cell
+                      key={`bar-${index}`}
+                      fill={entry.fill}
+                      fillOpacity={hoveredRiskIndex === null || hoveredRiskIndex === index ? 1 : 0.6}
+                      stroke={hoveredRiskIndex === index ? '#ffffff' : 'transparent'}
+                      strokeWidth={hoveredRiskIndex === index ? 1.5 : 0}
+                      className="transition-all duration-150"
+                    />
                   ))}
                 </Bar>
               </BarChart>
