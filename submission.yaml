@@ -6,15 +6,15 @@ team:
   name: "AeroX"
   track: "AI"
   lead:
-    name: "Shivam Joshi"
-    email: "shivamjoshi7906@gmail.com"
+    name: "Dhruvi Kundariya"
+    email: "dhruvikundariya5@gmial.com"
   members:
     - name: "Marshal Godhani"
       email: "marshalgodhani@gmail.com"
-    - name: "Team Member 3"
-      email: "member3@aerox.ai"
-    - name: "Team Member 4"
-      email: "member4@aerox.ai"
+    - name: "Shivam Joshi"
+      email: "shivamjoshi7906@gmail.com"
+    - name: "Shreya Adroja"
+      email: "adrojashreya0@gmail.com"
 
 submission:
   title: "MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot"
