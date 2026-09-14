@@ -105,17 +105,34 @@ def get_asset_details(asset_id: str, db: Session = Depends(get_db)):
     if not asset:
         raise HTTPException(status_code=404, detail=f"Asset {asset_id} not found")
 
+    readiness = evaluate_asset_readiness(db, asset_id)
+    pred = prediction_service.predict_rul(db, asset_id)
+
     return AssetDetailResponse(
         asset_id=asset.asset_id,
         source_asset_id=asset.source_asset_id,
         asset_type=asset.asset_type,
         mission_criticality=asset.mission_criticality,
         service_age=asset.service_age_months,
+        service_age_months=asset.service_age_months,
         total_operating_hours=asset.total_operating_hours,
         maintenance_count=asset.maintenance_count,
         last_maintenance_cycle=asset.last_maintenance_cycle,
         latest_cycle=asset.latest_cycle,
+        current_cycle=asset.latest_cycle,
         operational_setting_1=asset.operational_setting_1,
         operational_setting_2=asset.operational_setting_2,
         operational_setting_3=asset.operational_setting_3,
+        predicted_rul=pred["predicted_rul"],
+        risk_level=pred["risk_level"],
+        readiness_score=readiness["readiness_score"],
+        readiness_category=readiness["readiness_category"],
+        baseline_life_cycles=250,
+        engine_model="Pratt & Whitney F135-PW-100" if "F-35" in asset.asset_type else "General Electric F110-GE-129",
+        assigned_squadron="4th Fighter Squadron (Vipers)",
+        next_mission_date=readiness.get("mission_window_start", "2026-10-31"),
+        next_mission_priority="CRITICAL",
+        buffer_cycles=readiness.get("buffer_cycles"),
+        mission_cycles_required=readiness.get("mission_cycles_required", 30)
     )
+

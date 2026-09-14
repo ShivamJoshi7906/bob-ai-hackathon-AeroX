@@ -17,25 +17,20 @@ def evaluate_asset_readiness(db: Session, asset_id: str) -> dict:
 
     buffer = round(rul - req_cycles, 1)
 
-    # Calculate Readiness Score (0 to 100)
-    if buffer >= 30:
-        score = 95.0
-    elif buffer >= 15:
-        score = 78.0
-    elif buffer >= 0:
-        score = 58.0
-    else:
-        score = max(10.0, round(45.0 + buffer * 1.5, 1))
-
-    # Readiness Category Assignment
-    if score >= 90:
-        category = "READY"
-    elif score >= 70:
-        category = "READY WITH MONITORING"
-    elif score >= 50:
-        category = "NEEDS INSPECTION"
-    else:
+    # Canonical Readiness Category Assignment
+    if buffer < 0 or prob >= 0.70 or rul <= 20:
         category = "NOT READY"
+        score = max(10.0, round(40.0 + buffer * 1.5, 1))
+    elif buffer < 15 or prob >= 0.40 or risk == "HIGH":
+        category = "NEEDS INSPECTION"
+        score = 58.0
+    elif buffer < 35 or prob >= 0.20 or risk == "MEDIUM":
+        category = "READY WITH MONITORING"
+        score = 78.0
+    else:
+        category = "READY"
+        score = 95.0
+
 
     # Evidence Generator (Non-hallucinating, strictly data-driven)
     evidence = []

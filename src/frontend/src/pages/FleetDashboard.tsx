@@ -58,18 +58,30 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
 
   // Recharts Readiness Donut Data
   const readinessChartData = [
-    { name: 'READY', value: summary?.ready_count || 22, color: '#10B981' },
-    { name: 'MONITORING', value: summary?.monitoring_count || 9, color: '#F59E0B' },
-    { name: 'INSPECTION', value: summary?.inspection_count || 4, color: '#F97316' },
-    { name: 'NOT READY', value: summary?.not_ready_count || 3, color: '#EF4444' },
+    { name: 'READY', value: summary?.ready_count ?? 26, color: '#10B981' },
+    { name: 'MONITORING', value: summary?.monitoring_count ?? 6, color: '#F59E0B' },
+    { name: 'INSPECTION', value: summary?.inspection_count ?? 3, color: '#F97316' },
+    { name: 'NOT READY', value: summary?.not_ready_count ?? 3, color: '#EF4444' },
   ];
 
-  // Risk Distribution Bar Data
+  // Dynamic Risk Distribution Bar Data from assets or summary
+  const riskCounts = assets.reduce(
+    (acc, a) => {
+      const r = (a.risk_level || 'LOW').toUpperCase();
+      if (r === 'CRITICAL') acc.critical++;
+      else if (r === 'HIGH') acc.high++;
+      else if (r === 'MEDIUM') acc.medium++;
+      else acc.low++;
+      return acc;
+    },
+    { low: 0, medium: 0, high: 0, critical: 0 }
+  );
+
   const riskChartData = [
-    { level: 'LOW', count: 20, fill: '#10B981' },
-    { level: 'MEDIUM', count: 9, fill: '#F59E0B' },
-    { level: 'HIGH', count: 6, fill: '#F97316' },
-    { level: 'CRITICAL', count: summary?.critical_risk_count || 3, fill: '#EF4444' },
+    { level: 'LOW', count: assets.length > 0 ? riskCounts.low : 26, fill: '#10B981' },
+    { level: 'MEDIUM', count: assets.length > 0 ? riskCounts.medium : 6, fill: '#F59E0B' },
+    { level: 'HIGH', count: assets.length > 0 ? riskCounts.high : 3, fill: '#F97316' },
+    { level: 'CRITICAL', count: assets.length > 0 ? riskCounts.critical : (summary?.critical_risk_count ?? 3), fill: '#EF4444' },
   ];
 
   return (
@@ -116,35 +128,35 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <MetricCard
           title="Total Fleet Assets"
-          value={summary?.total_assets || 38}
+          value={summary?.total_assets ?? 38}
           subtitle="Active Fighter Fleet"
           icon={Plane}
           color="slate"
         />
         <MetricCard
           title="Fully Ready"
-          value={summary?.ready_count || 22}
+          value={summary?.ready_count ?? 26}
           subtitle="Mission Capable"
           icon={CheckCircle}
           color="emerald"
         />
         <MetricCard
           title="Ready w/ Monitoring"
-          value={summary?.monitoring_count || 9}
+          value={summary?.monitoring_count ?? 6}
           subtitle="Active Telemetry Watch"
           icon={Activity}
           color="amber"
         />
         <MetricCard
           title="Needs Inspection"
-          value={summary?.inspection_count || 4}
+          value={summary?.inspection_count ?? 3}
           subtitle="Depot Clearance Pending"
           icon={AlertTriangle}
           color="orange"
         />
         <MetricCard
           title="Grounded / Not Ready"
-          value={summary?.not_ready_count || 3}
+          value={summary?.not_ready_count ?? 3}
           subtitle="P1 Critical Action"
           icon={ShieldAlert}
           color="rose"
@@ -239,7 +251,9 @@ export const FleetDashboard: React.FC<FleetDashboardProps> = ({
 
           <div className="p-3 bg-slate-950/60 rounded-lg border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
             <span>High/Critical Risk Assets:</span>
-            <span className="font-mono font-bold text-rose-400">9 Aircraft (23.6%)</span>
+            <span className="font-mono font-bold text-rose-400">
+              {(summary?.high_risk_count ?? 3) + (summary?.critical_risk_count ?? 3)} Aircraft ({((((summary?.high_risk_count ?? 3) + (summary?.critical_risk_count ?? 3)) / (summary?.total_assets ?? 38)) * 100).toFixed(1)}%)
+            </span>
           </div>
         </div>
 

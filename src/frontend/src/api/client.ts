@@ -45,14 +45,14 @@ async function postWithFallback<T>(url: string, body: unknown, fallbackData: T):
 // --- MOCK DATA SEEDS FOR AEROSPACE FLEET ---
 const MOCK_FLEET_SUMMARY: FleetSummary = {
   total_assets: 38,
-  ready_count: 22,
-  monitoring_count: 9,
-  inspection_count: 4,
+  ready_count: 26,
+  monitoring_count: 6,
+  inspection_count: 3,
   not_ready_count: 3,
   critical_risk_count: 3,
-  high_risk_count: 6,
+  high_risk_count: 3,
   upcoming_missions_30d: 14,
-  urgent_maintenance_p1: 3,
+  urgent_maintenance_p1: 6,
 };
 
 const MOCK_ASSETS: AssetRow[] = Array.from({ length: 38 }, (_, i) => {
@@ -66,11 +66,11 @@ const MOCK_ASSETS: AssetRow[] = Array.from({ length: 38 }, (_, i) => {
       asset_type: 'F-35A Lightning II',
       total_operating_hours: 1420,
       mission_criticality: 'CAT 1 - COMBAT READINESS',
-      predicted_rul: 12,
+      predicted_rul: 18.4,
       risk_level: 'CRITICAL',
-      readiness_score: 18,
+      readiness_score: 22.6,
       readiness_category: 'NOT READY',
-      next_mission_date: '2026-09-20',
+      next_mission_date: '2026-10-31',
       next_mission_priority: 'CRITICAL',
     };
   }
@@ -80,12 +80,12 @@ const MOCK_ASSETS: AssetRow[] = Array.from({ length: 38 }, (_, i) => {
       asset_type: 'F-15EX Eagle II',
       total_operating_hours: 2150,
       mission_criticality: 'CAT 1 - COMBAT READINESS',
-      predicted_rul: 19,
+      predicted_rul: 19.2,
       risk_level: 'CRITICAL',
-      readiness_score: 24,
+      readiness_score: 20.8,
       readiness_category: 'NOT READY',
-      next_mission_date: '2026-09-22',
-      next_mission_priority: 'HIGH',
+      next_mission_date: '2026-11-02',
+      next_mission_priority: 'CRITICAL',
     };
   }
   if (id === 'AC-028') {
@@ -94,39 +94,39 @@ const MOCK_ASSETS: AssetRow[] = Array.from({ length: 38 }, (_, i) => {
       asset_type: 'F/A-18E Super Hornet',
       total_operating_hours: 3100,
       mission_criticality: 'CAT 2 - TACTICAL SUPPORT',
-      predicted_rul: 22,
+      predicted_rul: 22.5,
       risk_level: 'CRITICAL',
-      readiness_score: 31,
+      readiness_score: 36.2,
       readiness_category: 'NOT READY',
-      next_mission_date: '2026-09-25',
+      next_mission_date: '2026-11-05',
       next_mission_priority: 'HIGH',
     };
   }
-  if (i % 7 === 0) {
+  if ([7, 21, 35].includes(i + 1)) {
     return {
       asset_id: id,
       asset_type: 'F-35A Lightning II',
       total_operating_hours: 980 + i * 40,
       mission_criticality: 'CAT 1 - COMBAT READINESS',
-      predicted_rul: 38 + (i % 15),
+      predicted_rul: 38.0,
       risk_level: 'HIGH',
-      readiness_score: 55,
+      readiness_score: 58.0,
       readiness_category: 'NEEDS INSPECTION',
-      next_mission_date: '2026-09-28',
+      next_mission_date: '2026-11-12',
       next_mission_priority: 'HIGH',
     };
   }
-  if (i % 4 === 0) {
+  if ([5, 10, 15, 20, 25, 30].includes(i + 1)) {
     return {
       asset_id: id,
       asset_type: 'F-22A Raptor',
       total_operating_hours: 1200 + i * 30,
-      mission_criticality: 'CAT 1 - COMBAT READINESS',
-      predicted_rul: 65 + (i % 20),
+      mission_criticality: 'CAT 2 - TACTICAL SUPPORT',
+      predicted_rul: 48.0,
       risk_level: 'MEDIUM',
-      readiness_score: 74,
+      readiness_score: 78.0,
       readiness_category: 'READY WITH MONITORING',
-      next_mission_date: '2026-10-02',
+      next_mission_date: '2026-11-20',
       next_mission_priority: 'ROUTINE',
     };
   }
@@ -135,11 +135,11 @@ const MOCK_ASSETS: AssetRow[] = Array.from({ length: 38 }, (_, i) => {
     asset_type: (i % 2 === 0) ? 'F-35A Lightning II' : 'F-16C Viper',
     total_operating_hours: 600 + i * 25,
     mission_criticality: 'CAT 3 - PATROL & ESCORT',
-    predicted_rul: 110 + (i % 50),
+    predicted_rul: (i + 1) % 4 === 0 ? 75.0 : 110.0 + ((i + 1) % 25),
     risk_level: 'LOW',
-    readiness_score: 92,
+    readiness_score: 95.0,
     readiness_category: 'READY',
-    next_mission_date: '2026-10-10',
+    next_mission_date: '2026-11-25',
     next_mission_priority: 'ROUTINE',
   };
 });
@@ -156,9 +156,9 @@ function generateTelemetry(assetId: string, cyclesCount = 50): SensorReading[] {
     return {
       cycle,
       s2: Number((518.67 + Math.random() * 0.5).toFixed(2)),
-      s3: Number((baseTemp + factor * tempTrend * 80 + Math.random() * 4).toFixed(2)), // Combustor temp degradation
-      s4: Number((1400 + factor * tempTrend * 65 + Math.random() * 5).toFixed(2)),     // LPT temp degradation
-      s7: Number((553.4 - factor * tempTrend * 25 + Math.random() * 2).toFixed(2)),     // Pressure decay
+      s3: Number((baseTemp + factor * tempTrend * 80 + Math.random() * 4).toFixed(2)),
+      s4: Number((1400 + factor * tempTrend * 65 + Math.random() * 5).toFixed(2)),
+      s7: Number((553.4 - factor * tempTrend * 25 + Math.random() * 2).toFixed(2)),
       s8: Number((2388.0 + Math.random() * 1.2).toFixed(2)),
       s9: Number((9050.0 + Math.random() * 2.5).toFixed(2)),
       s11: Number((47.2 + factor * 2.1 + Math.random() * 0.4).toFixed(2)),
@@ -166,7 +166,7 @@ function generateTelemetry(assetId: string, cyclesCount = 50): SensorReading[] {
       s14: Number((8.42 + factor * 0.35 + Math.random() * 0.05).toFixed(2)),
       s15: Number((0.03 + Math.random() * 0.005).toFixed(4)),
       s17: Number((392 + Math.random() * 2).toFixed(0)),
-      s20: Number((38.8 - factor * 4.2 + Math.random() * 0.3).toFixed(2)),              // Coolant flow drop
+      s20: Number((38.8 - factor * 4.2 + Math.random() * 0.3).toFixed(2)),
       s21: Number((23.3 - factor * 2.8 + Math.random() * 0.2).toFixed(2)),
     };
   });
@@ -186,11 +186,11 @@ export const api = {
       const s = params.search.toLowerCase();
       filtered = filtered.filter(a => a.asset_id.toLowerCase().includes(s) || a.asset_type.toLowerCase().includes(s));
     }
-    if (params?.status) {
-      filtered = filtered.filter(a => a.readiness_category === params.status);
+    if (params?.status && params.status !== 'ALL') {
+      filtered = filtered.filter(a => a.readiness_category.toUpperCase() === params.status?.toUpperCase());
     }
-    if (params?.risk) {
-      filtered = filtered.filter(a => a.risk_level === params.risk);
+    if (params?.risk && params.risk !== 'ALL') {
+      filtered = filtered.filter(a => a.risk_level.toUpperCase() === params.risk?.toUpperCase());
     }
     return fetchWithFallback(
       `${API_BASE}/assets?status=${params?.status || ''}&risk=${params?.risk || ''}&search=${params?.search || ''}`,
@@ -199,311 +199,242 @@ export const api = {
   },
 
   // 3. Single Asset Details
-  getAssetDetails: (assetId: string): Promise<AssetDetail> => {
-    const found = MOCK_ASSETS.find(a => a.asset_id === assetId) || MOCK_ASSETS[2]; // Default to AC-003
-    const detail: AssetDetail = {
+  getAssetDetails: async (assetId: string): Promise<AssetDetail> => {
+    const found = MOCK_ASSETS.find(a => a.asset_id === assetId) || MOCK_ASSETS[2];
+    const defaultDetail: AssetDetail = {
       ...found,
       service_age_months: 34,
       last_maintenance_cycle: 145,
-      current_cycle: 198,
+      current_cycle: 195,
       baseline_life_cycles: 250,
       engine_model: 'Pratt & Whitney F135-PW-100',
       assigned_squadron: '4th Fighter Squadron (Vipers)',
     };
-    return fetchWithFallback(`${API_BASE}/assets/${assetId}`, detail);
+    try {
+      const response = await fetch(`${API_BASE}/assets/${assetId}`);
+      if (!response.ok) return defaultDetail;
+      const data = await response.json();
+      return {
+        ...defaultDetail,
+        ...data,
+        predicted_rul: data.predicted_rul ?? defaultDetail.predicted_rul,
+        risk_level: data.risk_level ?? defaultDetail.risk_level,
+        readiness_score: data.readiness_score ?? defaultDetail.readiness_score,
+        readiness_category: data.readiness_category ?? defaultDetail.readiness_category,
+        baseline_life_cycles: data.baseline_life_cycles ?? 250,
+        current_cycle: data.latest_cycle ?? data.current_cycle ?? 195,
+      };
+    } catch {
+      return defaultDetail;
+    }
   },
 
-  // 4. Sensor telemetry history
-  getSensorData: (assetId: string, cycles = 50): Promise<SensorReading[]> => {
+  // 4. Sensor telemetry history (UNPACKS READINGS ARRAY CLEANLY)
+  getSensorData: async (assetId: string, cycles = 50): Promise<SensorReading[]> => {
     const mockTelemetry = generateTelemetry(assetId, cycles);
-    return fetchWithFallback(`${API_BASE}/assets/${assetId}/sensors?recent_cycles=${cycles}`, mockTelemetry);
+    try {
+      const response = await fetch(`${API_BASE}/assets/${assetId}/sensors?recent_cycles=${cycles}`);
+      if (!response.ok) return mockTelemetry;
+      const data = await response.json();
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.readings)) return data.readings;
+      return mockTelemetry;
+    } catch {
+      return mockTelemetry;
+    }
   },
 
   // 5. Readiness & Evidence Explanation
-  getAssetReadiness: (assetId: string): Promise<AssetReadiness> => {
+  getAssetReadiness: async (assetId: string): Promise<AssetReadiness> => {
     const asset = MOCK_ASSETS.find(a => a.asset_id === assetId) || MOCK_ASSETS[2];
     const isCritical = asset.risk_level === 'CRITICAL';
+    const req = assetId === 'AC-014' ? 32 : (assetId === 'AC-028' ? 25 : 30);
+    const buf = Number((asset.predicted_rul - req).toFixed(1));
 
-    const mockReadiness: AssetReadiness = {
+    const defaultReadiness: AssetReadiness = {
       asset_id: assetId,
       readiness_score: asset.readiness_score,
       readiness_category: asset.readiness_category,
       predicted_rul: asset.predicted_rul,
-      mission_buffer_cycles: asset.predicted_rul - 30, // 30 cycle standard mission
+      mission_buffer_cycles: buf,
       recommended_action: isCritical
         ? 'GROUND ASSET IMMEDIATELY. Initiate HPC stage 4 blade teardown & thermal barrier coating inspection.'
-        : 'Perform standard 50-cycle turbine clearance check and monitor fuel ratio enthalpy.',
+        : 'Asset cleared for full operational flight envelope.',
       evaluated_at: new Date().toISOString(),
       evidence_bullets: [
         {
           evidence_id: 'EV-8901',
           category: 'TELEMETRY',
-          severity: isCritical ? 'CRITICAL' : 'WARNING',
-          description: `Combustor Outlet Temp (s3) elevated by +${isCritical ? '48' : '12'}°K over recent 30 cycles indicating hot-section degradation.`,
-          impact_score: isCritical ? -42 : -15,
+          severity: isCritical ? 'CRITICAL' : 'INFO',
+          description: isCritical
+            ? 'Combustor Outlet Temp (s3) and LPC Outlet Temp (s2) elevated indicating thermal distress.'
+            : 'All sensor telemetry operating within normal baseline bands.',
+          impact_score: isCritical ? -42 : 0,
         },
         {
           evidence_id: 'EV-8902',
           category: 'RUL_MARGIN',
           severity: isCritical ? 'CRITICAL' : 'INFO',
-          description: `Predicted RUL of ${asset.predicted_rul} cycles is below required combat mission envelope threshold (30 cycles).`,
-          impact_score: isCritical ? -35 : -5,
-        },
-        {
-          evidence_id: 'EV-8903',
-          category: 'COMPONENT_WEAR',
-          severity: 'WARNING',
-          description: 'HPT Coolant Bleed flow (s20) dropped by 10.8%, accelerating thermal stress on High-Pressure Turbine stage 1 blades.',
-          impact_score: -18,
-        },
-        {
-          evidence_id: 'EV-8904',
-          category: 'MAINTENANCE_LOG',
-          severity: 'INFO',
-          description: 'Cross-referenced public aviation maintenance log #AV-2024-912: HPC stage 4 rotor seal wear symptoms detected.',
-          impact_score: -10,
+          description: `Predicted RUL of ${asset.predicted_rul} cycles vs mission requirement of ${req} cycles (${buf > 0 ? '+' : ''}${buf} buffer).`,
+          impact_score: isCritical ? -35 : 10,
         },
       ],
     };
-    return fetchWithFallback(`${API_BASE}/assets/${assetId}/readiness`, mockReadiness);
+
+    try {
+      const response = await fetch(`${API_BASE}/assets/${assetId}/readiness`);
+      if (!response.ok) return defaultReadiness;
+      const data = await response.json();
+      const realBuf = data.buffer_cycles ?? data.mission_buffer_cycles ?? buf;
+      return {
+        ...defaultReadiness,
+        ...data,
+        predicted_rul: data.predicted_rul ?? asset.predicted_rul,
+        mission_buffer_cycles: realBuf,
+        readiness_score: data.readiness_score ?? defaultReadiness.readiness_score,
+        readiness_category: data.readiness_category ?? defaultReadiness.readiness_category,
+        recommended_action: data.recommended_action ?? defaultReadiness.recommended_action,
+        evidence_bullets: Array.isArray(data.evidence_reasons)
+          ? data.evidence_reasons.map((r: string, idx: number) => ({
+              evidence_id: `EV-${idx + 1}`,
+              category: 'TELEMETRY',
+              severity: isCritical ? 'CRITICAL' : 'INFO',
+              description: r,
+              impact_score: -20,
+            }))
+          : defaultReadiness.evidence_bullets,
+      };
+    } catch {
+      return defaultReadiness;
+    }
   },
 
   // 6. Prioritized Maintenance Queue
-  getMaintenancePriorities: (priorityFilter?: string): Promise<MaintenanceItem[]> => {
-    const queue: MaintenanceItem[] = [
-      {
-        id: 'MNT-101',
-        asset_id: 'AC-003',
-        priority: 'P1 - CRITICAL',
-        risk_level: 'CRITICAL',
-        predicted_rul: 12,
-        identified_issue: 'HPC Outlet Thermal Spiking & Core Pressure Decay',
-        affected_subsystem: 'High Pressure Compressor (HPC)',
-        mission_impact: 'Severe threat of mid-flight engine stall during high-g combat maneuvers.',
-        recommended_action: 'Ground asset; immediate teardown of HPC module & seal replacement.',
-        knowledge_base_procedure: 'T.O. 1F-35A-2-70-1: HPC Rotor Stage 4 Inspection & Borescope Protocol',
-        synthetic_asset_linkage: true,
-        provenance_note: 'Recommended procedure derived from public aviation maintenance log knowledge base',
-        created_at: '2026-09-14T08:00:00Z',
-      },
-      {
-        id: 'MNT-102',
-        asset_id: 'AC-014',
-        priority: 'P1 - CRITICAL',
-        risk_level: 'CRITICAL',
-        predicted_rul: 19,
-        identified_issue: 'Combustor Outlet Temperature Exceedance (s3 > 690K)',
-        affected_subsystem: 'Combustion Chamber & Fuel Nozzles',
-        mission_impact: 'Risk of turbine blade erosion during prolonged afterburner operation.',
-        recommended_action: 'Replace fuel nozzle assembly #3 and inspect liner thermal barrier coating.',
-        knowledge_base_procedure: 'T.O. 1F-15EX-2-20-4: Combustor Liner & Nozzle Refurbishment',
-        synthetic_asset_linkage: true,
-        provenance_note: 'Recommended procedure derived from public aviation maintenance log knowledge base',
-        created_at: '2026-09-14T09:15:00Z',
-      },
-      {
-        id: 'MNT-103',
-        asset_id: 'AC-028',
-        priority: 'P1 - CRITICAL',
-        risk_level: 'CRITICAL',
-        predicted_rul: 22,
-        identified_issue: 'HPT Coolant Bleed Flow Drop (s20 < 35 lbf)',
-        affected_subsystem: 'High Pressure Turbine Cooling Circuit',
-        mission_impact: 'Potential thermal breakdown of turbine disk under high payload takeoff.',
-        recommended_action: 'Flushing of secondary cooling passages and valve actuator recalibration.',
-        knowledge_base_procedure: 'T.O. 1F-18E-2-40-1: Turbine Coolant Duct Clear & Flush Procedure',
-        synthetic_asset_linkage: true,
-        provenance_note: 'Recommended procedure derived from public aviation maintenance log knowledge base',
-        created_at: '2026-09-14T10:30:00Z',
-      },
-      {
-        id: 'MNT-104',
-        asset_id: 'AC-007',
-        priority: 'P2 - URGENT',
-        risk_level: 'HIGH',
-        predicted_rul: 42,
-        identified_issue: 'Bypass Ratio Fluctuations (s14 drift)',
-        affected_subsystem: 'Fan Guide Vane Actuator System',
-        mission_impact: 'Sub-optimal fuel efficiency; potential operational range reduction.',
-        recommended_action: 'Calibrate variable inlet guide vanes during scheduled overnight ground turn.',
-        knowledge_base_procedure: 'T.O. 1F-35A-2-72-3: Fan Vane Rigging & Calibration',
-        synthetic_asset_linkage: true,
-        provenance_note: 'Recommended procedure derived from public aviation maintenance log knowledge base',
-        created_at: '2026-09-13T14:20:00Z',
-      },
-      {
-        id: 'MNT-105',
-        asset_id: 'AC-019',
-        priority: 'P3 - SCHEDULED',
-        risk_level: 'MEDIUM',
-        predicted_rul: 68,
-        identified_issue: 'Routine 200-Hour Oil Sampling & Filter Replacement',
-        affected_subsystem: 'Engine Lubrication & Sump Subsystem',
-        mission_impact: 'None currently; routine preventive maintenance window.',
-        recommended_action: 'Drain oil sump, replace magnetic chip detector filter, sample fluid.',
-        knowledge_base_procedure: 'T.O. 1F-22A-2-12-1: Standard Lubrication Servicing',
-        synthetic_asset_linkage: true,
-        provenance_note: 'Recommended procedure derived from public aviation maintenance log knowledge base',
-        created_at: '2026-09-12T11:00:00Z',
-      },
-    ];
-
-    let res = queue;
-    if (priorityFilter && priorityFilter !== 'ALL') {
-      res = queue.filter(item => item.priority.startsWith(priorityFilter));
+  getMaintenancePriorities: async (priorityFilter?: string): Promise<MaintenanceItem[]> => {
+    try {
+      const response = await fetch(`${API_BASE}/maintenance/priorities?priority=${priorityFilter || ''}`);
+      if (!response.ok) return [];
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        return data.map((item: any) => ({
+          id: item.id || `MNT-${item.asset_id}`,
+          asset_id: item.asset_id,
+          priority: item.priority.startsWith('P') && item.priority_label ? `${item.priority} - ${item.priority_label}` : item.priority,
+          risk_level: item.risk_level,
+          predicted_rul: item.predicted_rul,
+          identified_issue: item.identified_issue || item.issue || 'Operational degradation anomaly detected.',
+          affected_subsystem: item.affected_subsystem || item.knowledge_base_match?.relevant_component || 'High Pressure Compressor (HPC)',
+          mission_impact: item.mission_impact || 'Degraded mission completion buffer.',
+          recommended_action: item.recommended_action,
+          knowledge_base_procedure: item.knowledge_base_procedure || item.knowledge_base_match?.action_taken || 'T.O. Standard Aircraft Maintenance Procedure',
+          synthetic_asset_linkage: true,
+          provenance_note: item.provenance_note || 'Derived from public aviation maintenance knowledge base',
+          created_at: item.created_at || '2026-09-14T10:00:00Z',
+        }));
+      }
+      return [];
+    } catch {
+      return [];
     }
-
-    return fetchWithFallback(`${API_BASE}/maintenance/priorities?priority=${priorityFilter || ''}`, res);
   },
 
   // 7. Upcoming Mission Scenarios
-  getUpcomingMissions: (): Promise<MissionWindow[]> => {
-    const missions: MissionWindow[] = [
-      {
-        mission_id: 'MSN-2026-ALPHA',
-        mission_name: 'Operation Northern Shield (Strike Patrol)',
-        asset_id: 'AC-003',
-        asset_type: 'F-35A Lightning II',
-        start_date: '2026-09-20',
-        end_date: '2026-09-24',
-        mission_priority: 'CRITICAL',
-        required_cycles: 28,
-        current_rul: 12,
-        buffer_margin: -16,
-        status: 'MISSION THREAT',
-        data_origin: 'synthetic',
-      },
-      {
-        mission_id: 'MSN-2026-BRAVO',
-        mission_name: 'Exercise Agile Reaper (Combat Air Patrol)',
-        asset_id: 'AC-014',
-        asset_type: 'F-15EX Eagle II',
-        start_date: '2026-09-22',
-        end_date: '2026-09-27',
-        mission_priority: 'CRITICAL',
-        required_cycles: 32,
-        current_rul: 19,
-        buffer_margin: -13,
-        status: 'MISSION THREAT',
-        data_origin: 'synthetic',
-      },
-      {
-        mission_id: 'MSN-2026-CHARLIE',
-        mission_name: 'Pacific Defender Reconnaissance',
-        asset_id: 'AC-028',
-        asset_type: 'F/A-18E Super Hornet',
-        start_date: '2026-09-25',
-        end_date: '2026-09-29',
-        mission_priority: 'HIGH',
-        required_cycles: 25,
-        current_rul: 22,
-        buffer_margin: -3,
-        status: 'AT RISK',
-        data_origin: 'synthetic',
-      },
-      {
-        mission_id: 'MSN-2026-DELTA',
-        mission_name: 'Baltic Escort & Intercept Patrol',
-        asset_id: 'AC-007',
-        asset_type: 'F-35A Lightning II',
-        start_date: '2026-09-28',
-        end_date: '2026-10-04',
-        mission_priority: 'HIGH',
-        required_cycles: 30,
-        current_rul: 42,
-        buffer_margin: +12,
-        status: 'SAFE',
-        data_origin: 'synthetic',
-      },
-      {
-        mission_id: 'MSN-2026-ECHO',
-        mission_name: 'Joint Force Maritime Air Defense',
-        asset_id: 'AC-012',
-        asset_type: 'F-22A Raptor',
-        start_date: '2026-10-01',
-        end_date: '2026-10-06',
-        mission_priority: 'ROUTINE',
-        required_cycles: 20,
-        current_rul: 85,
-        buffer_margin: +65,
-        status: 'SAFE',
-        data_origin: 'synthetic',
-      },
-    ];
-    return fetchWithFallback(`${API_BASE}/missions/upcoming`, missions);
+  getUpcomingMissions: async (): Promise<MissionWindow[]> => {
+    try {
+      const response = await fetch(`${API_BASE}/missions/upcoming`);
+      if (!response.ok) return [];
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        return data.map((m: any) => ({
+          mission_id: m.mission_id,
+          mission_name: m.mission_name,
+          asset_id: m.asset_id,
+          asset_type: m.asset_type || (m.asset_id === 'AC-003' ? 'F-35A Lightning II' : 'F-15EX Eagle II'),
+          start_date: m.start_date,
+          end_date: m.end_date,
+          mission_priority: (m.mission_priority || 'CRITICAL').toUpperCase(),
+          required_cycles: m.required_cycles,
+          current_rul: m.current_rul ?? (m.asset_id === 'AC-003' ? 18.4 : 50.0),
+          buffer_margin: m.buffer_margin ?? Number(((m.current_rul ?? 18.4) - m.required_cycles).toFixed(1)),
+          status: m.status || ((m.current_rul ?? 18.4) < m.required_cycles ? 'MISSION THREAT' : 'SAFE'),
+          data_origin: m.data_origin || 'synthetic',
+        }));
+      }
+      return [];
+    } catch {
+      return [];
+    }
   },
 
   // 8. Bob Copilot Interactive Query
   queryBob: (query: string, assetId?: string): Promise<BobQueryResponse> => {
     const qLower = query.toLowerCase();
-    let response: BobQueryResponse;
+    let fallbackResponse: BobQueryResponse;
 
     if (qLower.includes('ac-003') || assetId === 'AC-003') {
-      response = {
-        answer: 'Asset AC-003 (F-35A Lightning II) is NOT READY due to severe high-pressure compressor degradation. Its predicted RUL is 12 cycles against an upcoming mission requirement of 28 cycles (negative margin of -16 cycles). Combustor outlet temperatures (s3) have spiked by +48K.',
+      fallbackResponse = {
+        query,
+        intent: 'WHY_ASSET_NOT_READY',
+        answer: 'Asset AC-003 (F-35A Lightning II) is NOT READY due to severe high-pressure compressor degradation. Its predicted RUL is 18.4 cycles against an upcoming mission requirement of 30 cycles (negative safety buffer of -11.6 cycles). Combustor outlet temperatures (s3) and LPC outlet temp (s2) exhibit continuous thermal degradation.',
         evidence: {
           asset_id: 'AC-003',
-          predicted_rul: 12,
-          mission_cycles_required: 28,
-          buffer_cycles: -16,
+          predicted_rul: 18.4,
+          mission_cycles_required: 30,
+          buffer_cycles: -11.6,
           risk_level: 'CRITICAL',
           readiness_category: 'NOT READY',
-          recommended_action: 'Ground asset immediately. Initiate P1 Critical maintenance task MNT-101 (HPC Stage 4 Teardown & Rotor Seal Replacement).',
+          recommended_action: 'Ground asset immediately. Initiate P1 Critical maintenance task MNT-003 (HPC Rotor Assembly Overhaul & Blade Clearance Spec).',
         },
-        tools_called: ['get_asset_details("AC-003")', 'get_readiness_evidence("AC-003")', 'check_mission_compatibility("AC-003")'],
+        tools_called: ['get_asset_status', 'get_asset_prediction', 'get_asset_risk', 'get_asset_sensor_trends', 'get_upcoming_mission'],
+        timestamp: new Date().toISOString(),
       };
     } else if (qLower.includes('not ready') || qLower.includes('which assets')) {
-      response = {
-        answer: 'Currently 3 assets in the fleet are classified as NOT READY:\n1. AC-003 (F-35A) — RUL: 12 cycles | Critical HPC Spiking\n2. AC-014 (F-15EX) — RUL: 19 cycles | Combustor Temp Exceedance\n3. AC-028 (F/A-18E) — RUL: 22 cycles | Turbine Coolant Bleed Drop\n\nAll 3 present severe mission threats for upcoming 30-day combat operational windows.',
+      fallbackResponse = {
+        query,
+        intent: 'GET_NOT_READY_ASSETS',
+        answer: 'Currently 3 assets in the fleet are classified as NOT READY due to mission buffer deficits:\n1. AC-003 (F-35A) — RUL: 18.4 cycles | Buffer: -11.6 cycles | Critical HPC Degradation\n2. AC-014 (F-15EX) — RUL: 19.2 cycles | Buffer: -12.8 cycles | Combustor Temp Exceedance\n3. AC-028 (F/A-18E) — RUL: 22.5 cycles | Buffer: -2.5 cycles | Turbine Coolant Flow Drop\n\nAll 3 require immediate grounding before scheduled mission departure windows.',
         evidence: {
-          asset_id: 'AC-003, AC-014, AC-028',
-          predicted_rul: 12,
-          risk_level: 'CRITICAL',
-          readiness_category: 'NOT READY',
-          recommended_action: 'Prioritize P1 Critical Queue tasks MNT-101, MNT-102, and MNT-103 before mission start dates.',
+          total_non_ready: 3,
+          not_ready_assets: ['AC-003', 'AC-014', 'AC-028'],
+          top_critical_asset: 'AC-003',
+          worst_buffer_cycles: -11.6,
         },
-        tools_called: ['get_fleet_summary()', 'filter_assets(readiness="NOT READY")', 'get_maintenance_queue(priority="P1")'],
+        tools_called: ['get_not_ready_assets'],
+        timestamp: new Date().toISOString(),
       };
     } else if (qLower.includes('first') || qLower.includes('maintenance')) {
-      response = {
-        answer: 'Maintenance crews must immediately execute Task MNT-101 on AC-003 (P1 Critical). AC-003 is scheduled for Operation Northern Shield on Sept 20, 2026, but has a negative mission buffer of -16 cycles. Replacing the HPC Stage 4 rotor seal will restore baseline RUL to >150 cycles.',
+      fallbackResponse = {
+        query,
+        intent: 'MAINTENANCE_PRIORITIZATION',
+        answer: 'Maintenance crews must immediately execute Task MNT-003 on AC-003 (P1 Critical). AC-003 is scheduled for Operation Northern Shield on Oct 31, 2026, but has a negative mission buffer of -11.6 cycles. Executing T.O. 1F-35A-2-72-1 (HPC Rotor Assembly Overhaul) will restore baseline RUL to >150 cycles.',
         evidence: {
-          asset_id: 'AC-003',
-          predicted_rul: 12,
-          risk_level: 'CRITICAL',
-          readiness_category: 'NOT READY',
-          recommended_action: 'Execute T.O. 1F-35A-2-70-1: HPC Rotor Stage 4 Inspection & Borescope Protocol.',
+          top_priority_asset: 'AC-003',
+          top_priority_level: 'P1',
+          p1_total_count: 3,
+          p2_total_count: 3,
+          total_recommendations: 12,
         },
-        tools_called: ['get_p1_maintenance_priorities()', 'cross_reference_knowledge_base("HPC Rotor Seal")'],
-      };
-    } else if (qLower.includes('mission') || qLower.includes('risk')) {
-      response = {
-        answer: '3 upcoming missions are currently threatened by asset non-readiness:\n- MSN-2026-ALPHA (AC-003): Threat margin -16 cycles\n- MSN-2026-BRAVO (AC-014): Threat margin -13 cycles\n- MSN-2026-CHARLIE (AC-028): At risk margin -3 cycles\n\nRecommend swapping AC-003 with fully ready reserve asset AC-012 (RUL: 85 cycles).',
-        evidence: {
-          asset_id: 'AC-003 (Swap with AC-012)',
-          predicted_rul: 85,
-          mission_cycles_required: 28,
-          buffer_cycles: +57,
-          risk_level: 'LOW',
-          readiness_category: 'READY',
-          recommended_action: 'Reassign MSN-2026-ALPHA to AC-012 to eliminate mission risk immediately.',
-        },
-        tools_called: ['get_upcoming_missions()', 'find_ready_reserve_assets(min_rul=50)'],
+        tools_called: ['get_maintenance_recommendations'],
+        timestamp: new Date().toISOString(),
       };
     } else {
-      response = {
-        answer: `MissionGuard Bob Copilot analysis for query: "${query}"\n\nFleet Status Overview: 38 Total Aircraft Assets | 22 READY | 9 MONITORING | 4 INSPECTION | 3 NOT READY.\n\nAll critical telemetry parameters are being monitored in real time across 13 sensor streams (s2 to s21). For detailed asset drilldowns, specify an Asset ID such as AC-003 or select from the fleet table.`,
+      fallbackResponse = {
+        query,
+        intent: 'FLEET_OVERVIEW_HELP',
+        answer: `MissionGuard Bob Copilot analysis for: "${query}"\n\nFleet Status Overview: 38 Total Aircraft Assets | 26 READY | 6 MONITORING | 3 INSPECTION | 3 NOT READY.\n\nAll critical telemetry channels are monitored across 13 sensor streams. For detailed asset diagnostics, specify an Asset ID (e.g. AC-003).`,
         evidence: {
-          asset_id: 'FLEET-WIDE',
-          predicted_rul: 110,
-          risk_level: 'LOW',
-          readiness_category: 'READY',
-          recommended_action: 'Continue real-time telemetry monitoring.',
+          total_assets: 38,
+          ready_count: 26,
+          monitoring_count: 6,
+          inspection_count: 3,
+          not_ready_count: 3,
         },
-        tools_called: ['query_fleet_telemetry()', 'evaluate_mission_readiness()'],
+        tools_called: ['get_fleet_summary'],
+        timestamp: new Date().toISOString(),
       };
     }
 
-    return postWithFallback(`${API_BASE}/bob/query`, { query, asset_id: assetId }, response);
+    return postWithFallback(`${API_BASE}/bob/query`, { query, asset_id: assetId }, fallbackResponse);
   },
 };
+

@@ -26,6 +26,7 @@ def get_asset_readiness(asset_id: str, db: Session = Depends(get_db)):
         mission_cycles_required=res["mission_cycles_required"],
         predicted_rul=res["predicted_rul"],
         buffer_cycles=res["buffer_cycles"],
+        mission_buffer_cycles=res["buffer_cycles"],
         risk_level=res["risk_level"],
         evidence_reasons=res["evidence_reasons"],
         recommended_action=res["recommended_action"]

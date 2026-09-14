@@ -12,6 +12,7 @@ class ReadinessResponse(BaseModel):
     mission_cycles_required: int = 30
     predicted_rul: float
     buffer_cycles: float
+    mission_buffer_cycles: Optional[float] = None
     risk_level: str
     evidence_reasons: List[str]
     recommended_action: str

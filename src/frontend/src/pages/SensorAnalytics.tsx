@@ -63,9 +63,10 @@ export const SensorAnalytics: React.FC<SensorAnalyticsProps> = ({
       setLoading(true);
       try {
         const data = await api.getSensorData(selectedAssetId, cycleRange);
-        setTelemetry(data);
+        setTelemetry(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Error fetching sensor data:', err);
+        setTelemetry([]);
       } finally {
         setLoading(false);
       }
@@ -185,6 +186,11 @@ export const SensorAnalytics: React.FC<SensorAnalyticsProps> = ({
 
         {loading ? (
           <LoadingState message="Rendering high-frequency sensor streams..." />
+        ) : telemetry.length === 0 ? (
+          <div className="h-64 flex flex-col items-center justify-center text-slate-400 font-mono text-xs">
+            <AlertTriangle className="w-8 h-8 text-amber-400 mb-2" />
+            <span>No telemetry cycle data found for {selectedAssetId}.</span>
+          </div>
         ) : (
           <div className="h-96 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">

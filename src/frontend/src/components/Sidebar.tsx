@@ -147,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span className="text-rose-400 font-bold">AC-003 GROUNDED</span>
           </div>
           <p className="text-[11px] text-slate-400 leading-tight">
-            HPC Stage 4 Temp Spiking (+48K). Predicted RUL: 12 cycles.
+            HPC Stage 4 Temp Spiking (+48K). Predicted RUL: 18.4 cycles.
           </p>
           <button
             onClick={() => onPageChange('asset')}
@@ -162,7 +162,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="pt-4 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 space-y-1">
         <div>BOB AI HACKATHON 2026</div>
         <div>CHALLENGE D1: AEROSPACE AI</div>
-        <div className="text-emerald-400 font-semibold">MODEL ACCURACY: 94.2% R2</div>
+        <div className="text-cyan-400 font-semibold">VALIDATION R²: 0.69 | MAE: 25.4c</div>
       </div>
 
     </aside>

@@ -11,6 +11,7 @@ import { BobCopilot } from './pages/BobCopilot';
 
 import { FleetSummary, AssetRow } from './types/asset';
 import { api } from './api/client';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('fleet');
@@ -80,50 +81,52 @@ export function App() {
 
         {/* Page Container */}
         <main className="flex-1 p-6 overflow-y-auto">
-          {currentPage === 'fleet' && (
-            <FleetDashboard
-              summary={summary}
-              assets={assets}
-              onSelectAsset={handleSelectAsset}
-              onNavigateToMaintenance={() => setCurrentPage('maintenance')}
-              onNavigateToBob={handleNavigateToBob}
-            />
-          )}
+          <ErrorBoundary onReset={() => setCurrentPage('fleet')}>
+            {currentPage === 'fleet' && (
+              <FleetDashboard
+                summary={summary}
+                assets={assets}
+                onSelectAsset={handleSelectAsset}
+                onNavigateToMaintenance={() => setCurrentPage('maintenance')}
+                onNavigateToBob={handleNavigateToBob}
+              />
+            )}
 
-          {currentPage === 'asset' && (
-            <AssetDetails
-              assetId={selectedAssetId}
-              onBack={() => setCurrentPage('fleet')}
-              onNavigateToSensors={handleNavigateToSensors}
-              onNavigateToBob={handleNavigateToBob}
-            />
-          )}
+            {currentPage === 'asset' && (
+              <AssetDetails
+                assetId={selectedAssetId}
+                onBack={() => setCurrentPage('fleet')}
+                onNavigateToSensors={handleNavigateToSensors}
+                onNavigateToBob={handleNavigateToBob}
+              />
+            )}
 
-          {currentPage === 'sensors' && (
-            <SensorAnalytics
-              initialAssetId={selectedAssetId}
-              onSelectAsset={setSelectedAssetId}
-            />
-          )}
+            {currentPage === 'sensors' && (
+              <SensorAnalytics
+                initialAssetId={selectedAssetId}
+                onSelectAsset={setSelectedAssetId}
+              />
+            )}
 
-          {currentPage === 'maintenance' && (
-            <MaintenanceCenter onSelectAsset={handleSelectAsset} />
-          )}
+            {currentPage === 'maintenance' && (
+              <MaintenanceCenter onSelectAsset={handleSelectAsset} />
+            )}
 
-          {currentPage === 'missions' && (
-            <MissionWindows
-              onSelectAsset={handleSelectAsset}
-              onNavigateToBob={handleNavigateToBob}
-            />
-          )}
+            {currentPage === 'missions' && (
+              <MissionWindows
+                onSelectAsset={handleSelectAsset}
+                onNavigateToBob={handleNavigateToBob}
+              />
+            )}
 
-          {currentPage === 'bob' && (
-            <BobCopilot
-              initialQuery={bobInitialQuery}
-              initialAssetId={selectedAssetId}
-              onSelectAsset={handleSelectAsset}
-            />
-          )}
+            {currentPage === 'bob' && (
+              <BobCopilot
+                initialQuery={bobInitialQuery}
+                initialAssetId={selectedAssetId}
+                onSelectAsset={handleSelectAsset}
+              />
+            )}
+          </ErrorBoundary>
         </main>
       </div>
 

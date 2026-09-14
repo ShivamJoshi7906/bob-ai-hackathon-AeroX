@@ -53,9 +53,9 @@ export const Navbar: React.FC<NavbarProps> = ({ summary, onNavigateToBob }) => {
           </div>
 
           <div className="flex items-center space-x-3">
-            <span className="text-emerald-400 font-bold">{summary ? summary.ready_count : 22} READY</span>
-            <span className="text-amber-400 font-semibold">{summary ? summary.monitoring_count : 9} MONITOR</span>
-            <span className="text-orange-400 font-semibold">{summary ? summary.inspection_count : 4} INSPEC</span>
+            <span className="text-emerald-400 font-bold">{summary ? summary.ready_count : 26} READY</span>
+            <span className="text-amber-400 font-semibold">{summary ? summary.monitoring_count : 6} MONITOR</span>
+            <span className="text-orange-400 font-semibold">{summary ? summary.inspection_count : 3} INSPEC</span>
             <span className="text-rose-400 font-extrabold animate-pulse">{summary ? summary.not_ready_count : 3} NOT READY</span>
           </div>
         </div>
@@ -78,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({ summary, onNavigateToBob }) => {
           <div className="text-right hidden sm:block">
             <div className="flex items-center justify-end space-x-1.5 text-xs text-slate-400 font-mono">
               <Activity className="w-3.5 h-3.5 text-emerald-400" />
-              <span>LIVE TELEMETRY</span>
+              <span>TELEMETRY MONITOR</span>
             </div>
             <div className="text-xs font-mono font-semibold text-slate-300 tracking-wider">
               {time || '2026-09-14 12:15:00 UTC'}

@@ -15,4 +15,7 @@ export interface AssetReadiness {
   recommended_action: string;
   evidence_bullets: ReadinessEvidence[];
   evaluated_at: string;
+  mission_window_start?: string;
+  mission_window_end?: string;
+  mission_cycles_required?: number;
 }

@@ -72,11 +72,13 @@ export const MissionWindows: React.FC<MissionWindowsProps> = ({
           </div>
           <div className="p-3 bg-slate-950/60 rounded-lg border border-slate-800 flex items-center justify-between">
             <span className="text-slate-400">Mission Threats Identified:</span>
-            <span className="text-rose-400 font-bold">2 Operations (-16 & -13 cycles)</span>
+            <span className="text-rose-400 font-bold">
+              {missions.filter(m => m.status === 'MISSION THREAT').length} Operations (Deficit Cycles)
+            </span>
           </div>
           <div className="p-3 bg-slate-950/60 rounded-lg border border-slate-800 flex items-center justify-between">
             <span className="text-slate-400">Data Origin:</span>
-            <span className="text-cyan-400 font-bold">Synthetic (Post 2026-09-13)</span>
+            <span className="text-cyan-400 font-bold">Operational Timelines (2026-10-31)</span>
           </div>
         </div>
       </div>

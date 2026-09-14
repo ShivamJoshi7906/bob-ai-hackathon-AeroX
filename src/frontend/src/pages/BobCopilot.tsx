@@ -44,7 +44,7 @@ export const BobCopilot: React.FC<BobCopilotProps> = ({
       sender: 'bob',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       text: 'Greetings Commander. I am IBM Bob Copilot, specialized in aerospace predictive maintenance, RUL estimation, and mission readiness reasoning. How can I assist your operational decisions today?',
-      tools_called: ['initialize_bob_reasoning_engine()', 'connect_telemetry_stream()'],
+      tools_called: [],
     },
   ]);
 

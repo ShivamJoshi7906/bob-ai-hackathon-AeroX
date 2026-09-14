@@ -211,11 +211,11 @@ export const AssetDetails: React.FC<AssetDetailsProps> = ({
           <div className="grid grid-cols-2 gap-4 font-mono text-xs pt-2">
             <div className="p-3 bg-slate-950/70 rounded-lg border border-slate-800">
               <span className="text-slate-400 block text-[10px]">NEXT MISSION DATE</span>
-              <span className="text-white font-bold">{asset.next_mission_date || '2026-09-20'}</span>
+              <span className="text-white font-bold">{readiness.mission_window_start || asset.next_mission_date || '2026-10-31'}</span>
             </div>
             <div className="p-3 bg-slate-950/70 rounded-lg border border-slate-800">
               <span className="text-slate-400 block text-[10px]">REQUIRED MISSION CYCLES</span>
-              <span className="text-cyan-400 font-bold">28 cycles</span>
+              <span className="text-cyan-400 font-bold">{readiness.mission_cycles_required ?? 30} cycles</span>
             </div>
           </div>
 
@@ -328,22 +328,30 @@ export const AssetDetails: React.FC<AssetDetailsProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
-              {telemetry.map(row => (
-                <tr key={row.cycle} className="hover:bg-slate-900/60">
-                  <td className="p-2.5 text-cyan-400 font-bold">#{row.cycle}</td>
-                  <td className="p-2.5 text-slate-300">{row.s2} K</td>
-                  <td
-                    className={`p-2.5 font-bold ${
-                      (row.s3 || 0) > 680 ? 'text-rose-400' : 'text-slate-300'
-                    }`}
-                  >
-                    {row.s3} K
+              {Array.isArray(telemetry) && telemetry.length > 0 ? (
+                telemetry.map(row => (
+                  <tr key={row.cycle} className="hover:bg-slate-900/60">
+                    <td className="p-2.5 text-cyan-400 font-bold">#{row.cycle}</td>
+                    <td className="p-2.5 text-slate-300">{row.s2} K</td>
+                    <td
+                      className={`p-2.5 font-bold ${
+                        (row.s3 || 0) > 680 ? 'text-rose-400' : 'text-slate-300'
+                      }`}
+                    >
+                      {row.s3} K
+                    </td>
+                    <td className="p-2.5 text-slate-300">{row.s4} K</td>
+                    <td className="p-2.5 text-slate-300">{row.s7} psia</td>
+                    <td className="p-2.5 text-slate-300">{row.s20} lbf</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center text-slate-500">
+                    No telemetry cycles recorded for this asset.
                   </td>
-                  <td className="p-2.5 text-slate-300">{row.s4} K</td>
-                  <td className="p-2.5 text-slate-300">{row.s7} psia</td>
-                  <td className="p-2.5 text-slate-300">{row.s20} lbf</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
