@@ -111,6 +111,7 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 - **Presentation Slide Deck:** [`presentation/MissionGuard-AI.pptx`](presentation/MissionGuard-AI.pptx)
 - **Demo Video:** [Watch Demo Video (Google Drive)](https://drive.google.com/file/d/1XtydPZPkD7NgdoFOGAOKtN2WaGAi2Nz2/view?usp=sharing) ([`demo/demo-video-link.txt`](demo/demo-video-link.txt))
 - **Demo Screenshots:** [`demo/screenshots/`](demo/screenshots/)
+- **Live Demo:** Not deployed — local demo provided
 
 ---
 
