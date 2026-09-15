@@ -7,7 +7,7 @@ team:
   track: "AI"
   lead:
     name: "Dhruvi Kundariya"
-    email: "dhruvikundariya5@gmial.com"
+    email: "dhruvikundariya5@gmail.com"
   members:
     - name: "Marshal Godhani"
       email: "marshalgodhani@gmail.com"
@@ -61,13 +61,15 @@ submission:
   what_we_are_most_proud_of: >
     The end-to-end decision chain from raw sensor telemetry to conversational copilot reasoning:
     MissionGuard does not just alert that an engine is degrading; it evaluates whether the engine can complete
-    its specific upcoming mission, explains the physical telemetry drivers, and gives maintenance commanders
-    a prioritized action plan via IBM Bob.
+    its specific upcoming mission, explains the observed telemetry trends associated with degradation,
+    and gives maintenance commanders a prioritized action plan via IBM Bob.
 
   known_limitations: >
     Built using NASA C-MAPSS simulated turbofan degradation data and public maintenance logbook excerpts.
-    Aircraft-to-maintenance linkage is synthetic (explicitly flagged in code). This is an operational
-    decision-support prototype and does not connect to real military flight controls or avionics.
+    Aircraft-to-maintenance linkage and certain operational context are synthetic or derived for the demonstration.
+    The readiness thresholds are project-defined decision-support rules, not aviation certification or flight-safety
+    standards. This is an operational decision-support prototype and does not connect to real military flight
+    controls or avionics.
 
 artifacts:
   source_code: "src/"
