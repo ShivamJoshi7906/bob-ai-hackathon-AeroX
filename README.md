@@ -1,7 +1,21 @@
 # MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
 
 **BOB AI Hackathon 2026 — Challenge D1 (Defense & Aerospace)**  
-**Team:** AeroX  
+## Team
+
+**AeroX** is a 4-member team focused on applying AI, machine learning, and full-stack engineering to real-world aerospace maintenance and mission-readiness challenges.
+
+| Team Member | Role | Contribution |
+|---|---|---|
+| **Shivam Joshi** | AI/ML | RUL prediction, feature engineering, model validation, and overall system architecture |
+| **Shreya Adroja** | Backend & Data Engineering | Data pipeline, database, FastAPI services, and prediction/readiness APIs |
+| **Dhruvi Kundariya** | Frontend & Visualization | React dashboard, telemetry visualization, asset monitoring, and user experience |
+| **Marshal Godhani** | IBM Bob & Integration | IBM Bob copilot integration, tool workflows, documentation, and demo integration |
+
+### Our Goal
+
+We built MissionGuard AI as an end-to-end decision-support system that connects **machine learning predictions with operational decisions**. Rather than only predicting component degradation, the system connects RUL, sensor evidence, mission requirements, readiness, and maintenance priorities into a single workflow powered by IBM Bob.
+
 **Tagline:** *"Know what's mission-ready. Predict what's next. Act before failure."*  
 
 ---
@@ -113,6 +127,14 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 - **Demo Screenshots:** [`demo/screenshots/`](demo/screenshots/)
 - **Live Demo:** Not deployed — local demo provided
 
+## 8. Known Limitations
+
+- **Dataset Scope:** The predictive-maintenance model is demonstrated using NASA C-MAPSS FD001 turbofan telemetry, which represents a simulated turbofan degradation scenario rather than real military aircraft telemetry.
+- **Degradation Coverage:** The current model is not validated across all possible aircraft or engine failure modes and should not be interpreted as a universal aircraft-health model.
+- **Synthetic Operational Context:** Mission windows and certain maintenance/health relationships are synthetic or derived for the demonstration and are clearly documented in the data-provenance documentation.
+- **Readiness Assessment:** The readiness tiers and thresholds are project-defined decision-support rules, not aviation certification or flight-safety standards.
+- **Real-World Deployment:** Operational deployment would require validation with real fleet data, aircraft-specific calibration, engineering oversight, and appropriate safety/certification processes.
+- **Decision Support:** MissionGuard and IBM Bob provide evidence-based decision support; final maintenance and mission decisions remain with qualified human personnel.
 ---
 
 ## 8. What We Are Most Proud Of
