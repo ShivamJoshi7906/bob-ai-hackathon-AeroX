@@ -1,7 +1,20 @@
-# MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
+# 🚀 MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
 
-**BOB AI Hackathon 2026 — Challenge D1 (Defense & Aerospace)**  
-## Team
+**BOB AI Hackathon 2026 — Challenge D1 (Defense & Aerospace)**
+
+> *"Know what's mission-ready. Predict what's next. Act before failure."*
+
+---
+
+## 👥 Team
+
+- **Team Name:** AeroX
+- **Track:** AI
+- **Team Lead:** Dhruvi Kundariya ([dhruvikundariya5@gmial.com](mailto:dhruvikundariya5@gmial.com))
+- **Team Members:**
+  - Marshal Godhani ([marshalgodhani@gmail.com](mailto:marshalgodhani@gmail.com))
+  - Shivam Joshi ([shivamjoshi7906@gmail.com](mailto:shivamjoshi7906@gmail.com))
+  - Shreya Adroja ([adrojashreya0@gmail.com](mailto:adrojashreya0@gmail.com))
 
 **AeroX** is a 4-member team focused on applying AI, machine learning, and full-stack engineering to real-world aerospace maintenance and mission-readiness challenges.
 
@@ -12,19 +25,22 @@
 | **Dhruvi Kundariya** | Frontend & Visualization | React dashboard, telemetry visualization, asset monitoring, and user experience |
 | **Marshal Godhani** | IBM Bob & Integration | IBM Bob copilot integration, tool workflows, documentation, and demo integration |
 
-### Our Goal
-
-We built MissionGuard AI as an end-to-end decision-support system that connects **machine learning predictions with operational decisions**. Rather than only predicting component degradation, the system connects RUL, sensor evidence, mission requirements, readiness, and maintenance priorities into a single workflow powered by IBM Bob.
-
-**Tagline:** *"Know what's mission-ready. Predict what's next. Act before failure."*  
-
 ---
 
-## 1. Executive Summary & Problem Addressed
+## 🎯 Problem Statement
 
 Defense aerospace organizations currently rely on rigid, calendar-based maintenance schedules regardless of actual aircraft component wear. Millions of dollars in Health & Usage Monitoring System (HUMS) sensor data sit unanalyzed while unexpected platform groundings cost billions annually and risk mission-critical operations.
 
-**MissionGuard AI** solves this operational challenge. Powered by **IBM Bob**, MissionGuard ingests multi-channel turbofan sensor telemetry and maintenance records to:
+The people who feel this pain are maintenance commanders and operations planners, who must decide whether an aircraft can be assigned to an upcoming mission without any objective, condition-based evidence of what will fail and when.
+
+---
+
+## 💡 Solution
+
+**MissionGuard AI** is an operational decision-support copilot powered by **IBM Bob**. It ingests multi-channel turbofan sensor telemetry and maintenance records, predicts Remaining Useful Life (RUL) through a leakage-free ML pipeline, and compares that prediction against upcoming mission-window requirements to calculate objective mission readiness.
+
+Rather than only predicting component degradation, the system connects RUL, sensor evidence, mission requirements, readiness, and maintenance priorities into a single workflow:
+
 1. Identify non-ready assets before assignment to mission windows.
 2. Accurately predict Remaining Useful Life (RUL) through leakage-free machine learning.
 3. Compare predicted RUL against upcoming mission requirements to calculate objective mission readiness.
@@ -34,18 +50,30 @@ Defense aerospace organizations currently rely on rigid, calendar-based maintena
 
 ---
 
-## 2. Key Implemented Features
+## ✨ Key Features
 
-- **Leakage-Free RUL Regression Pipeline**: Trained on NASA C-MAPSS turbofan data using strictly entity-isolated asset splits (27 train, 6 val, 5 test) and backward-looking rolling statistics (windows 5, 10, 20).
-- **Mission-Window Aware Readiness Engine**: Evaluates asset RUL against future-facing mission scenarios to categorize assets into 4 clear readiness tiers: `READY`, `READY WITH MONITORING`, `NEEDS INSPECTION`, and `NOT READY`.
-- **Physical Sensor Evidence Generator**: Automatically generates human-understandable evidence bullet points linking sensor drift ($s_2, s_9, s_{11}$) to mission buffer shortfalls.
-- **Maintenance Prioritization Queue**: Ranks maintenance actions by urgency and pairs degradation patterns with relevant repair procedures from aviation maintenance logs.
-- **Load-Bearing IBM Bob Copilot**: Connects via 9 structured MCP/REST tools to answer complex operational questions conversationally with live evidence and zero hallucinations.
-- **Full-Stack Aerospace Dashboard**: High-density React 18 + TypeScript + Vite + Tailwind CSS console featuring 6 complete views and interactive Recharts telemetry visualizations.
+- **Leakage-Free RUL Regression Pipeline:** Trained on NASA C-MAPSS turbofan data using strictly entity-isolated asset splits (27 train, 6 val, 5 test) and backward-looking rolling statistics (windows 5, 10, 20).
+- **Mission-Window Aware Readiness Engine:** Evaluates asset RUL against future-facing mission scenarios to categorize assets into 4 clear readiness tiers: `READY`, `READY WITH MONITORING`, `NEEDS INSPECTION`, and `NOT READY`.
+- **Physical Sensor Evidence Generator:** Automatically generates human-understandable evidence bullet points linking sensor drift (s₂, s₉, s₁₁) to mission buffer shortfalls.
+- **Maintenance Prioritization Queue:** Ranks maintenance actions by urgency and pairs degradation patterns with relevant repair procedures from aviation maintenance logs.
+- **Load-Bearing IBM Bob Copilot:** Connects via 9 structured MCP/REST tools to answer complex operational questions conversationally with live evidence and zero hallucinations.
+- **Full-Stack Aerospace Dashboard:** High-density React 18 + TypeScript + Vite + Tailwind CSS console featuring 6 complete views and interactive Recharts telemetry visualizations.
 
 ---
 
-## 3. High-Level Architecture
+## 🛠️ Tech Stack
+
+| Category | Technologies |
+|---|---|
+| **Languages** | Python 3.10–3.13, TypeScript, SQL |
+| **Frameworks** | FastAPI, Pydantic, React 18, Vite, Tailwind CSS, scikit-learn |
+| **IBM Technologies** | IBM Bob, IBM Bob Decision Tools (MCP), Granite-3.0 LLM integration |
+| **Databases** | SQLite, SQLAlchemy |
+| **Other** | Pandas, NumPy, joblib, Recharts, Lucide Icons, Pytest, GitHub Actions, ReportLab |
+
+---
+
+## 🏗️ High-Level Architecture
 
 ```mermaid
 graph TD
@@ -60,23 +88,38 @@ graph TD
 
 ---
 
-## 4. Tech Stack
+## 📁 Repository Structure
 
-- **Backend & ML**: Python 3.10–3.13, FastAPI, Pydantic, SQLAlchemy, SQLite, scikit-learn, joblib, Pandas, NumPy
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons
-- **AI & Copilot**: IBM Bob Decision Tools, MCP Standard, Granite-3.0 LLM integration
-- **DevOps & Testing**: Pytest, GitHub Actions Automated Validator, ReportLab
+```
+├── src/                  # All source code (backend, ML, frontend)
+├── data/                 # Dataset and data loading scripts
+├── scripts/              # Utility and build scripts
+├── tests/                # Pytest test suite
+├── docs/                 # Written documentation
+│   ├── setup-guide.md
+│   ├── architecture.md
+│   ├── ml-methodology.md
+│   ├── bob-integration.md
+│   ├── data-provenance.md
+│   └── hackathon-score-audit.md
+├── demo/                 # Demo artifacts
+│   ├── screenshots/      # App screenshots
+│   └── demo-video-link.txt  # Link to demo video
+├── presentation/         # Slide deck
+└── submission.yaml       # Structured submission metadata
+```
 
 ---
 
-## 5. Quickstart & Local Setup
+## ⚡ How to Run
+
+> **Copy these exact steps from [`docs/setup-guide.md`](docs/setup-guide.md)**
 
 ### Prerequisites
 - Python 3.10+
 - Node.js 18+ and npm 9+
 - Git
 
-### Installation & Run Steps
 ```bash
 # 1. Clone repository
 git clone https://github.com/ShivamJoshi7906/bob-ai-hackathon-AeroX.git
@@ -105,29 +148,39 @@ Open your browser at `http://localhost:5173` to explore the dashboard.
 
 ---
 
-## 6. The IBM Bob Copilot Experience
+## 🤖 The IBM Bob Copilot Experience
 
 Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
+
 1. *"Which assets are not ready?"* → Bob retrieves non-ready assets, negative mission buffers, and risk levels.
 2. *"Why is AC-003 not ready?"* → Bob explains the RUL shortfall, temperature drift, and core speed drop.
 3. *"What should maintenance do first?"* → Bob presents the ranked P1–P3 queue with recommended repair procedures.
 
 ---
 
-## 7. Submission Artifacts & Links
+## 🖥️ Demo
 
-- **Setup Guide:** [`docs/setup-guide.md`](docs/setup-guide.md)
-- **Technical Architecture:** [`docs/architecture.md`](docs/architecture.md)
-- **ML Methodology:** [`docs/ml-methodology.md`](docs/ml-methodology.md)
-- **IBM Bob Integration:** [`docs/bob-integration.md`](docs/bob-integration.md)
-- **Data Provenance & Safety:** [`docs/data-provenance.md`](docs/data-provenance.md)
-- **Hackathon Score Audit:** [`docs/hackathon-score-audit.md`](docs/hackathon-score-audit.md)
-- **Presentation Slide Deck:** [`presentation/MissionGuard-AI.pptx`](presentation/MissionGuard-AI.pptx)
-- **Demo Video:** [Watch Demo Video (Google Drive)](https://drive.google.com/file/d/1XtydPZPkD7NgdoFOGAOKtN2WaGAi2Nz2/view?usp=sharing) ([`demo/demo-video-link.txt`](demo/demo-video-link.txt))
-- **Demo Screenshots:** [`demo/screenshots/`](demo/screenshots/)
-- **Live Demo:** Not deployed — local demo provided
+| Artifact | Link |
+|---|---|
+| 📹 Demo Video | [Watch Demo Video (Google Drive)](https://drive.google.com/file/d/1XtydPZPkD7NgdoFOGAOKtN2WaGAi2Nz2/view?usp=sharing) · [`demo/demo-video-link.txt`](demo/demo-video-link.txt) |
+| 🌐 Live Demo | Not deployed — local demo provided ([`demo/live-demo-url.txt`](demo/live-demo-url.txt)) |
+| 🖼️ Screenshots | [`demo/screenshots/`](demo/screenshots/) |
+| 📊 Presentation | [`presentation/MissionGuard-AI.pptx`](presentation/MissionGuard-AI.pptx) |
 
-## 8. Known Limitations
+### Additional Documentation
+
+| Document | Link |
+|---|---|
+| Setup Guide | [`docs/setup-guide.md`](docs/setup-guide.md) |
+| Technical Architecture | [`docs/architecture.md`](docs/architecture.md) |
+| ML Methodology | [`docs/ml-methodology.md`](docs/ml-methodology.md) |
+| IBM Bob Integration | [`docs/bob-integration.md`](docs/bob-integration.md) |
+| Data Provenance & Safety | [`docs/data-provenance.md`](docs/data-provenance.md) |
+| Hackathon Score Audit | [`docs/hackathon-score-audit.md`](docs/hackathon-score-audit.md) |
+
+---
+
+## ⚠️ Known Limitations
 
 - **Dataset Scope:** The predictive-maintenance model is demonstrated using NASA C-MAPSS FD001 turbofan telemetry, which represents a simulated turbofan degradation scenario rather than real military aircraft telemetry.
 - **Degradation Coverage:** The current model is not validated across all possible aircraft or engine failure modes and should not be interpreted as a universal aircraft-health model.
@@ -135,8 +188,11 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 - **Readiness Assessment:** The readiness tiers and thresholds are project-defined decision-support rules, not aviation certification or flight-safety standards.
 - **Real-World Deployment:** Operational deployment would require validation with real fleet data, aircraft-specific calibration, engineering oversight, and appropriate safety/certification processes.
 - **Decision Support:** MissionGuard and IBM Bob provide evidence-based decision support; final maintenance and mission decisions remain with qualified human personnel.
+
 ---
 
-## 9. What We Are Most Proud Of
+## 🏅 What We're Most Proud Of
 
 The end-to-end operational decision chain: MissionGuard does not stop at warning that an engine is degrading; it evaluates whether that engine can survive its specific upcoming mission, explains the underlying physical sensor drift, and provides commanders with an actionable, prioritized maintenance plan via IBM Bob.
+
+---
