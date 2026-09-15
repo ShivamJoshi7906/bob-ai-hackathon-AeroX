@@ -137,6 +137,6 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 - **Decision Support:** MissionGuard and IBM Bob provide evidence-based decision support; final maintenance and mission decisions remain with qualified human personnel.
 ---
 
-## 8. What We Are Most Proud Of
+## 9. What We Are Most Proud Of
 
 The end-to-end operational decision chain: MissionGuard does not stop at warning that an engine is degrading; it evaluates whether that engine can survive its specific upcoming mission, explains the underlying physical sensor drift, and provides commanders with an actionable, prioritized maintenance plan via IBM Bob.
