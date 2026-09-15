@@ -108,7 +108,7 @@ Ask Bob the 3 mandatory hackathon questions directly from the copilot interface:
 - **IBM Bob Integration:** [`docs/bob-integration.md`](docs/bob-integration.md)
 - **Data Provenance & Safety:** [`docs/data-provenance.md`](docs/data-provenance.md)
 - **Hackathon Score Audit:** [`docs/hackathon-score-audit.md`](docs/hackathon-score-audit.md)
-- **Presentation Slide Deck:** [`presentation/slides.pdf`](presentation/slides.pdf)
+- **Presentation Slide Deck:** [`presentation/MissionGuard-AI.pptx`](presentation/MissionGuard-AI.pptx)
 - **Demo Video:** [`demo/demo-video-link.txt`](demo/demo-video-link.txt)
 - **Demo Screenshots:** [`demo/screenshots/`](demo/screenshots/)
 

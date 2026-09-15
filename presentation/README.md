@@ -1,7 +1,7 @@
 # MissionGuard AI — Presentation Deck
 
 This folder contains the slide presentation for MissionGuard AI:
-- `slides.pdf`: Complete 8-slide deck covering:
+- `MissionGuard-AI.pptx`: Complete presentation deck covering:
   1. Title & Team AeroX
   2. The Problem: The High Cost of Calendar-Based Maintenance
   3. The Solution: Condition-Based Mission Readiness Decision Support
